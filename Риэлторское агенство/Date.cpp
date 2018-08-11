@@ -10,6 +10,7 @@ Date::Date()
 	bool error = false;
 	do 
 	{
+		// Заполнение года
 		cout << "Год: ";
 		cin >> _year;
 		cin.ignore();
@@ -18,7 +19,7 @@ Date::Date()
 			error = true;
 			continue;
 		}
-
+		// Заполнение месяца
 		cout << "Месяц: ";
 		cin >> _month;
 		cin.ignore();
@@ -27,6 +28,7 @@ Date::Date()
 			error = true;
 		}
 
+		// Заполнения дня
 		cout << "День: ";
 		cin >> _day;
 		cin.ignore();
@@ -37,24 +39,50 @@ Date::Date()
 		}
 		if (_month < 7)
 		{
+			// Проверка февраля
 			if (_month == 2)
 			{
+				// Проверка на високосный год
 				if (_year % 4 == 0)
 				{
-
+					if (_day > 29)
+						error = true;
+				}
+				else
+				{
+					if (_day > 28)
+						error = true;
 				}
 			}
+			// Проверка других месяцев, до агуста включительно
 			else
 			{
-
+				if (_month % 2 == 1)
+				{
+					if (_day > 31)
+						error = true;
+				}
+				else
+					if (_day > 30)
+						error = true;
 			}
 		}
+		// Проверка месяцев после августа
 		else
 		{
 			if (_month % 2 == 0)
-				
+			{
+				if (_day > 31)
+					error = true;
+			}
+			else
+				if (_day > 30)
+					error = true;
 		}
-	}
+
+		if (error)
+			cout << "Допущена ошибка в одном из полей!" << endl;
+	} while (error);
 }		
 
 
