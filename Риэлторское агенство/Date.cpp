@@ -5,11 +5,14 @@
 using namespace std;
 
 
+// Конструктор без параметров
 Date::Date()
 {
-	bool error = false;
+	bool error;
+	cout << "Дата ГГГГ/ММ/ДД" << endl << endl;
 	do 
 	{
+		error = false;
 		// Заполнение года
 		cout << "Год: ";
 		cin >> _year;
@@ -17,7 +20,6 @@ Date::Date()
 		if (_year > 2018 || _year < 1920)
 		{
 			error = true;
-			continue;
 		}
 		// Заполнение месяца
 		cout << "Месяц: ";
@@ -28,14 +30,13 @@ Date::Date()
 			error = true;
 		}
 
-		// Заполнения дня
+
 		cout << "День: ";
 		cin >> _day;
 		cin.ignore();
 		if (_day < 1)
 		{
 			error = true;
-			continue;
 		}
 		if (_month < 7)
 		{
@@ -81,88 +82,31 @@ Date::Date()
 		}
 
 		if (error)
-			cout << "Допущена ошибка в одном из полей!" << endl;
+			cout << "Допущена ошибка в паполнении одного из полей даты!" << endl << endl;
 	} while (error);
 }		
 
 
+// Перегруженный оператор вывода данных в поток
+// теперь можно объекты класса Date распечатывать как обычые переменные
+ostream& operator<<(ostream& out, Date& obj)
+{
+	out << obj._year << "/" << obj._month << "/" << obj._day << endl;
+	return out;
+}
+
+
+// Если текущая дата равна по месяцу и году, вернет true иначе false
+bool Date::equalMonthAndYear(int year, int month)
+{
+	if (this->_month == month && this->_year == year)
+		return true;
+	else
+		return false;
+}
+
+
+// Деструктор
 Date::~Date()
 {
 }
-
-
-/*
-// Функция, разбивающая строку на строки, используя символы разделители
-// переданные в параметре delimeter
-char** split(char *str, char *delimeter)
-{
-	if (strlen(delimeter) == 0)
-	{
-
-	}
-	int start = 0, end = strlen(str);
-	// Вычисление начала строки, чтобы 
-	// избавить от символов разделителей в начале строки
-	for (auto i = 0; i < end; i++)
-	{
-		bool fl = false;
-		for (int j = 0; j < strlen(delimeter); j++)
-		{
-			if (str[i] == delimeter[j])
-			{
-				fl = true;
-				break;
-			}
-		}
-
-		if (fl)
-			start++;
-		else
-			break;
-	}
-
-	if (start == end)
-		return nullptr;
-
-	// Вычисление конца строки, чтобы 
-	// избавить от символов разделителей в начале строки
-	for (auto i = end - 1; i >= start; i--)
-	{
-		bool fl = false;
-		for (auto j = 0; j < strlen(delimeter); j++)
-		{
-			if (str[i] == delimeter[j])
-			{
-				fl = true;
-				break;
-			}
-		}
-
-		if (fl)
-			end--;
-		else
-		{
-			end = i + 1;
-			break;
-		}
-	}
-
-	int max_lenght = 0, count = 0, word_lenght = 0, word_start_from = start;
-	for (auto i = start; i < end; i++)
-	{
-		bool fl = false;
-		for (auto j = 0; j < strlen(delimeter); j++)
-			if (str[i] == str[j])
-			{
-				fl = true;
-				break;
-			}
-
-		if (fl)
-		{
-
-		}
-
-	}
-}
-*/

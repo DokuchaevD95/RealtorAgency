@@ -1,4 +1,10 @@
 #pragma once
+#include <iostream>
+
+
+using namespace std;
+
+
 class Date
 {
 private:
@@ -7,8 +13,8 @@ private:
 	int _year;
 public:
 	Date();
-	char* shortDate();
-	char* fullDate();
+	friend ostream& operator<<(ostream& out, Date& obj);
+	bool equalMonthAndYear(int, int);
 	~Date();
 };
 

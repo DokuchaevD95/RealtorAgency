@@ -5,6 +5,7 @@
 
 #include "collection.h"
 #include "Apartment.h"
+#include "Date.h"
 
 
 using namespace std;
@@ -15,6 +16,9 @@ char** split(char *str, char *delimeter);
 
 void main()
 {
+	setlocale(0, "");
+	auto d = Date();
+	cout << d;
 	Apartment *a = new Apartment;
 	collection<Apartment> coll;
 	coll.pushBack(*a);
