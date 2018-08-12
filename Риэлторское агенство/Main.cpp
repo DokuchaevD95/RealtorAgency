@@ -11,19 +11,15 @@
 using namespace std;
 
 
-char** split(char *str, char *delimeter);
-
-
 void main()
 {
 	setlocale(0, "");
-	auto d = Date();
-	cout << d;
-	Apartment *a = new Apartment;
+	Apartment *a = new Apartment();
+	cout << *a;
+	
 	collection<Apartment> coll;
 	coll.pushBack(*a);
-	cout << coll[0];
-	coll.pop(*a);
-	
+
+	cout << "end";
 	system("pause");
 }

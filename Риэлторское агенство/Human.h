@@ -10,6 +10,9 @@ private:
 	char* _second_name;
 	char* _last_name;
 public:
+	Human();
+	Human(const Human& obj);
+	static Human create();
 	Human(char*, char*, char*);
 	friend ostream& operator<<(ostream& out, Human& obj);
 	~Human();

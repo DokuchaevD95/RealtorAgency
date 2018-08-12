@@ -13,6 +13,9 @@ private:
 	int _year;
 public:
 	Date();
+	Date(int year, int month, int day);
+	Date(const Date& obj);
+	static Date create();
 	friend ostream& operator<<(ostream& out, Date& obj);
 	bool equalMonthAndYear(int, int);
 	~Date();

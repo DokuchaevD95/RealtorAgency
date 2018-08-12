@@ -8,12 +8,16 @@ private:
 public:
 	collection();
 	void pushBack(T& obj);
+	T* getElementById(int id);
 	void pop(T& obj);
 	int count();
 	T& operator[](int index);
 	~collection();
 };
 
+/*
+	Конструктор по умолчанию
+*/
 template<class T>
 collection<T>::collection()
 {
@@ -22,6 +26,9 @@ collection<T>::collection()
 	this->_count = 0;
 }
 
+/*
+	Метод добавления элемента в конец колекции
+*/
 template<class T>
 void collection<T>::pushBack(T& obj) 
 {
@@ -40,6 +47,9 @@ void collection<T>::pushBack(T& obj)
 	}
 }
 
+/*
+	Метод извлечения из колекции элемента
+*/
 template<class T>
 void collection<T>::pop(T& obj)
 {
@@ -55,16 +65,19 @@ void collection<T>::pop(T& obj)
 				this->_begin = dynamic_cast<T*>(obj.next());
 			if (&obj == this->_end)
 				this->_end = dynamic_cast<T*>(obj.prev());
-			delete &obj;
+			T* obj_pointer = &obj;
+			delete obj_pointer;
 			this->_count--;
 
 			break;
 		}
 		tmp = dynamic_cast<T*>(tmp->next());
 	}
-
 }
 
+/*
+	Метод, который будет позволять обращаться к элементам колекции, используя []
+*/
 template<class T>
 T& collection<T>::operator[](int index)
 {
@@ -78,21 +91,48 @@ T& collection<T>::operator[](int index)
 	return *tmp;
 }
 
+/*
+	Деструктор
+*/
 template<class T>
 collection<T>::~collection()
 {
-	auto tmp = this->_begin;
-	if (tmp)
-		while (tmp)
+	auto obj = this->_begin;
+	if (obj)
+		while (obj)
 		{
-			auto next = tmp->next();
-			delete tmp;
-			tmp = dynamic_cast<T*>(next);
+			auto next = dynamic_cast<T*>(obj->next());
+			delete obj;
+			obj = next;
 		}
 }
 
+/*
+	Гетер поля _count
+*/
 template<class T>
 int collection<T>::count()
 {
 	return this->_count;
+}
+
+/*
+	Возвращает указатель на элемент коллекции по идентификатору
+*/
+template<class T>
+T* getElementById(int id)
+{
+	if (this->_begin && this->_end)
+		return nullptr;
+	else
+	{
+		T* obj = this->_begin;
+		while (obj)
+		{
+			if (obj->getId() == id)
+				return obj;
+			obj = dynamic_cast<T*>(obj->next());
+		}
+		return nullptr;
+	}
 }
