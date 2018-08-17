@@ -19,7 +19,7 @@ void main()
 	
 	collection<Apartment> coll;
 	coll.pushBack(*a);
-
+	coll.sort();
 	cout << "end";
 	system("pause");
 }

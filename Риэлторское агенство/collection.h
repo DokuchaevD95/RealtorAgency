@@ -12,6 +12,7 @@ public:
 	void pop(T& obj);
 	int count();
 	T& operator[](int index);
+	void sort();
 	~collection();
 };
 
@@ -120,7 +121,7 @@ int collection<T>::count()
 	Возвращает указатель на элемент коллекции по идентификатору
 */
 template<class T>
-T* getElementById(int id)
+T* collection<T>::getElementById(int id)
 {
 	if (this->_begin && this->_end)
 		return nullptr;
@@ -134,5 +135,38 @@ T* getElementById(int id)
 			obj = dynamic_cast<T*>(obj->next());
 		}
 		return nullptr;
+	}
+}
+
+/*
+	Функция сортировки коллекции методом выбора
+*/
+template<class T>
+void collection<T>::sort()
+{
+	if (this->_count >= 2)
+	{
+		T* first_layer = this->_begin;
+		while (first_layer)
+		{
+			T* min = dynamic_cast<T*>(first_layer->next());
+			T* second_layer = dynamic_cast<T*>(first_layer->next());
+			while (second_layer)
+			{
+				if ((*second_layer) < (*min))
+					min = second_layer;
+				second_layer = dynamic_cast<T*>(second_layer->next());
+			}
+			if (min)
+			{
+				if ((*min) < (*first_layer))
+				{
+					dequeInstance::swap(min, first_layer);
+					first_layer = min;
+				}
+			}
+
+			first_layer = dynamic_cast<T*>(first_layer->next());
+		}
 	}
 }

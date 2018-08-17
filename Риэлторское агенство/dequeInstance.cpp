@@ -131,6 +131,48 @@ dequeInstance* dequeInstance::next()
 }
 
 /*
+	Статический метод, перемещающий два элемента стека между собой
+*/
+bool dequeInstance::swap(dequeInstance* src, dequeInstance* dst)
+{
+	if (!src || !dst)
+		return false;
+	else
+	{
+		if (src->_prev == dst)
+			src->up();
+		else if (src->_next == dst)
+			src->down();
+		else
+		{
+			dequeInstance* src_prev = src->_prev;
+			dequeInstance* src_next = src->_next;
+
+			dequeInstance* dst_prev = dst->_prev;
+			dequeInstance* dst_next = dst->_next;
+
+			if (src_prev)
+				src_prev->_next = dst;
+			if (src_next)
+				src_next->_prev = dst;
+
+			if (dst_prev)
+				dst_prev->_next = src;
+			if (dst_next)
+				dst_next->_prev = src;
+
+			src->_prev = dst_prev;
+			src->_next = dst_next;
+
+			dst->_prev = src_prev;
+			dst->_next = src_next;
+
+			return true;
+		}
+	}
+}
+
+/*
 	Деструктор экземпляра очереди, который удаляет объект и перестраивает связи
 */
 dequeInstance::~dequeInstance()

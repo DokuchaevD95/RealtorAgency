@@ -18,6 +18,7 @@ public:
 	bool down();
 	bool is_begin();
 	bool is_end();
+	static bool swap(dequeInstance* src, dequeInstance* dst);
 	virtual dequeInstance* prev();
 	virtual dequeInstance* next();
 	~dequeInstance();

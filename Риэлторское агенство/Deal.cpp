@@ -51,7 +51,7 @@ Deal::Deal(Date& date, DealType type, double summ, int apartmentId, int realtorI
 */
 Deal Deal::create()
 {
-	// опндслюрэ пеюкхгюжхч лерндю, бнглнфмн щрнр лернд ме онрпеасеряъ
+	// TODO: опндслюрэ пеюкхгюжхч лерндю, бнглнфмн щрнр лернд ме онрпеасеряъ
 	return Deal();
 }
 
