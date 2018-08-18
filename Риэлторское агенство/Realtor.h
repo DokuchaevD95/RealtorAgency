@@ -25,5 +25,7 @@ public:
 	bool operator<(Realtor& obj);
 	friend ostream& operator<<(ostream& out, Realtor& obj);
 	int getId();
+	void exportToFile();
+	static Realtor importFromFile();
 	~Realtor();
 };

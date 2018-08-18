@@ -6,14 +6,14 @@ using namespace std;
 class Human
 {
 private:
-	char* _first_name;
-	char* _second_name;
-	char* _last_name;
+	char _firstName[50];
+	char _secondName[50];
+	char _lastName[50];
 public:
 	Human();
 	Human(const Human& obj);
 	static Human create();
-	Human(char*, char*, char*);
+	Human(char firstName[], char secondName[], char lastName[]);
 	friend ostream& operator<<(ostream& out, Human& obj);
 	~Human();
 };

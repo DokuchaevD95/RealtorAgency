@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
+#include <fstream>
 #include <Windows.h>
 
 #include "Apartment.h"
@@ -8,7 +9,7 @@
 using namespace std;
 
 
-static char _fileName[] = "apartment_base.txt";
+char Apartment::_fileName[] = "apartment_base.txt";
 int Apartment::id = 1;
 
 /*
@@ -17,8 +18,7 @@ int Apartment::id = 1;
 Apartment::Apartment()
 {
 	this->_myId = Apartment::id++;
-	this->_address = new char[50];
-	strcpy(this->_address, "");
+	strcpy((char*)this->_address, "");
 	this->_type = DealType::sale;
 	this->_roomCount = 0;
 	this->_area = 0;
@@ -28,14 +28,14 @@ Apartment::Apartment()
 /*
 	Конструктор с параметрами
 */
-Apartment::Apartment(Human& owner, char* address, DealType type, int roomCount, int area, double cost, int myId)
+Apartment::Apartment(Human& owner, char address[], DealType type, int roomCount, int area, double cost, int myId)
 {
 	if (myId <= 0)
 		this->_myId = Apartment::id++;
 	else
 		this->_myId = myId;
 	this->_owner = owner;
-	this->_address = address;
+	strcpy((char*)this->_address, (char*)address);
 	this->_type = type;
 	this->_roomCount = roomCount;
 	this->_area = area;
@@ -49,8 +49,7 @@ Apartment::Apartment(const Apartment& obj)
 {
 	this->_myId = obj._myId;
 	this->_owner = obj._owner;
-	this->_address = new char[50];
-	strcpy(this->_address, obj._address);
+	strcpy((char*)this->_address, (char*)obj._address);
 	this->_type = obj._type;
 	this->_roomCount = obj._roomCount;
 	this->_area = obj._area;
@@ -64,10 +63,10 @@ Apartment Apartment::create()
 {
 	Human owner = Human::create();
 
-	char* address = new char[50];
+	char address[50];
 	cout << "Введите адрес: ";
-	cin.getline(address, 50);
-	OemToCharA(address, address);
+	cin.getline((char*)address, 50);
+	OemToCharA((char*)address, (char*)address);
 
 	int roomCount = 0;
 	cout << "Введите количество комнат: ";
@@ -159,9 +158,31 @@ int Apartment::getId()
 }
 
 /*
+	Отправляет экземпляр класса в файл
+*/
+void Apartment::exportToFile()
+{
+	ofstream file(Apartment::_fileName, ios::binary | ios::out | ios::app);
+	file.write((char*)this, sizeof(Apartment));
+	file.close();
+}
+
+/*
+	Считывает и возвращает экземпляр класса
+*/
+Apartment Apartment::importFromFile()
+{
+	ifstream file(Apartment::_fileName, ios::in);
+	Apartment result;
+	file.read((char*)&result, sizeof(Apartment));
+	file.close();
+
+	return result;
+}
+
+/*
 	Деструктор
 */
 Apartment::~Apartment()
 {
-	delete[] this->_address;
 }

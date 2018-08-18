@@ -1,4 +1,9 @@
+#include <iostream>
+#include <fstream>
+
 #include "Deal.h"
+
+using namespace std;
 
 
 int Deal::id = 1;
@@ -91,6 +96,29 @@ ostream& operator<<(ostream& out, Deal& obj)
 int Deal::getId()
 {
 	return this->_myId;
+}
+
+/*
+	«аписывает экзепл€р класса в файл
+*/
+void Deal::exportToFile()
+{
+	ofstream file(Deal::_fileName, ios::binary | ios::out |  ios::app);
+	file.write((char*)this, sizeof(*this));
+	file.close();
+}
+
+/*
+	—читывает и возвращает экземпл€р класса
+*/
+Deal Deal::importFromFile()
+{
+	ifstream file(Deal::_fileName, ios::binary | ios::in);
+	Deal result;
+	file.read((char*)&result, sizeof(Deal));
+	file.close();
+
+	return result;
 }
 
 /*

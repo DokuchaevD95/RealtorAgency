@@ -12,13 +12,9 @@
 */
 Human::Human()
 {
-	this->_first_name = new char[50];
-	this->_second_name = new char[50];
-	this->_last_name = new char[50];
-
-	strcpy(this->_first_name, "");
-	strcpy(this->_second_name, "");
-	strcpy(this->_last_name, "");
+	strcpy((char*)this->_firstName, "");
+	strcpy((char*)this->_secondName, "");
+	strcpy((char*)this->_lastName, "");
 }
 
 /*
@@ -26,23 +22,19 @@ Human::Human()
 */
 Human::Human(const Human& obj)
 {
-	this->_first_name = new char[50];
-	this->_second_name = new char[50];
-	this->_last_name = new char[50];
-
-	strcpy(this->_first_name, obj._first_name);
-	strcpy(this->_second_name, obj._second_name);
-	strcpy(this->_last_name, obj._last_name);
+	strcpy((char*)this->_firstName, (char*)obj._firstName);
+	strcpy((char*)this->_secondName, (char*)obj._secondName);
+	strcpy((char*)this->_lastName, (char*)obj._lastName);
 }
 
 /*
 	Конструктор с параметрами
 */
-Human::Human(char* first_name, char* second_name, char* last_name)
+Human::Human(char firstName[], char secondName[], char lastName[])
 {
-	this->_first_name = first_name;
-	this->_second_name = second_name;
-	this->_last_name = last_name;
+	strcpy(this->_firstName, firstName);
+	strcpy(this->_secondName, secondName);
+	strcpy(this->_lastName, lastName);
 }
 
 /*
@@ -50,21 +42,21 @@ Human::Human(char* first_name, char* second_name, char* last_name)
 */
 Human Human::create()
 {
-	char* firstName = new char[50];
-	char* secondName = new char[50];
-	char* lastName = new char[50];
+	char firstName[50];
+	char secondName[50];
+	char lastName[50];
 
 	cout << "Введите фамилию: ";
-	cin.getline(lastName, 50);
-	OemToCharA(lastName, lastName);
+	cin.getline((char*)lastName, 50);
+	OemToCharA((char*)lastName, (char*)lastName);
 
 	cout << "Введите имя: ";
-	cin.getline(firstName, 50);
-	OemToCharA(firstName, firstName);
+	cin.getline((char*)firstName, 50);
+	OemToCharA((char*)firstName, (char*)firstName);
 
 	cout << "Введите отчество: ";
-	cin.getline(secondName, 50);
-	OemToCharA(secondName, secondName);
+	cin.getline((char*)secondName, 50);
+	OemToCharA((char*)secondName, (char*)secondName);
 
 	return Human(firstName, secondName, lastName);
 }
@@ -74,7 +66,7 @@ Human Human::create()
 */
 ostream& operator<<(ostream& out, Human& obj)
 {
-	out << obj._last_name << " " << obj._first_name << " " << obj._second_name;
+	out << obj._lastName << " " << obj._firstName << " " << obj._secondName;
 	return out;
 }
 
@@ -84,7 +76,4 @@ ostream& operator<<(ostream& out, Human& obj)
 */
 Human::~Human()
 {
-	delete[] _first_name;
-	delete[] _second_name;
-	delete[] _last_name;
 }

@@ -14,12 +14,8 @@ using namespace std;
 void main()
 {
 	setlocale(0, "");
-	Apartment *a = new Apartment();
-	cout << *a;
-	
-	collection<Apartment> coll;
-	coll.pushBack(*a);
-	coll.sort();
+	Apartment a = Apartment::importFromFile();
+	cout << a;
 	cout << "end";
 	system("pause");
 }

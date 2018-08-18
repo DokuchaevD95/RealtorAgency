@@ -1,8 +1,13 @@
+#include <iostream>
+#include <fstream>
+
 #include "Realtor.h"
+
+using namespace std;
 
 
 int Realtor::id = 1;
-char Realtor::_fileName[] = "_realtor_base.txt";
+char Realtor::_fileName[] = "realtor_base.txt";
 
 
 /*
@@ -86,9 +91,31 @@ int Realtor::getId()
 }
 
 /*
+	«аписывает экземпл€р класса в файл
+*/
+void Realtor::exportToFile()
+{
+	ofstream file(Realtor::_fileName, ios::binary | ios::out | ios::app);
+	file.write((char*)this, sizeof(Realtor));
+	file.close();
+}
+
+/*
+	—читывает и возвращает экземпл€р класса с файла
+*/
+Realtor Realtor::importFromFile()
+{
+	ifstream file(Realtor::_fileName, ios::binary | ios::in);
+	Realtor result;
+	file.read((char*)&result, sizeof(Realtor));
+	file.close();
+
+	return result;
+}
+
+/*
 	ƒеструктор
 */
 Realtor::~Realtor()
-{
-	
+{	
 }

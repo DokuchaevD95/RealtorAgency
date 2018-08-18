@@ -28,6 +28,8 @@ public:
 	bool operator<(Deal& obj);
 	friend ostream& operator<<(ostream& out, Deal& obj);
 	int getId();
+	void exportToFile();
+	static Deal importFromFile();
 	~Deal();
 };
 
