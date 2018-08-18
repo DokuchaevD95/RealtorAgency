@@ -38,7 +38,11 @@ Realtor::Realtor(Human& name, float percent, int myId)
 	if (myId <= 0)
 		this->_myId = Realtor::id++;
 	else
+	{
 		this->_myId = myId;
+		if (myId >= Realtor::id)
+			Realtor::id = myId + 1;
+	}
 	this->_name = name;
 	this->_percent = percent;
 }
@@ -46,7 +50,7 @@ Realtor::Realtor(Human& name, float percent, int myId)
 /*
 	Статический метод, создающий новый экземпляр класса риэлтор
 */
-Realtor Realtor::create()
+Realtor* Realtor::create()
 {
 	Human name = Human::create();
 
@@ -55,7 +59,7 @@ Realtor Realtor::create()
 	cin >> percent;
 	cin.ignore();
 
-	return Realtor(name, percent);
+	return new Realtor(name, percent);
 }
 
 /*
@@ -103,14 +107,26 @@ void Realtor::exportToFile()
 /*
 	Считывает и возвращает экземпляр класса с файла
 */
-Realtor Realtor::importFromFile()
+Realtor* Realtor::importFromFile(ifstream& file)
 {
-	ifstream file(Realtor::_fileName, ios::binary | ios::in);
-	Realtor result;
-	file.read((char*)&result, sizeof(Realtor));
-	file.close();
+	if (file.eof())
+	{
+		Realtor* result = new Realtor();
+		file.read((char*)result, sizeof(Realtor));
+		if (result->_myId > Realtor::id)
+			Realtor::id = result->_myId + 1;
+		return result;
+	}
+	else
+		return nullptr;
+}
 
-	return result;
+/*
+Возвращает имя файла, в котором лежат экземпляры класса
+*/
+char* Realtor::getFileName()
+{
+	return Realtor::_fileName;
 }
 
 /*

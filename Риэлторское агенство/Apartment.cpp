@@ -33,7 +33,11 @@ Apartment::Apartment(Human& owner, char address[], DealType type, int roomCount,
 	if (myId <= 0)
 		this->_myId = Apartment::id++;
 	else
+	{
 		this->_myId = myId;
+		if (myId >= Apartment::id)
+			Apartment::id = myId + 1;
+	}
 	this->_owner = owner;
 	strcpy((char*)this->_address, (char*)address);
 	this->_type = type;
@@ -59,7 +63,7 @@ Apartment::Apartment(const Apartment& obj)
 /*
 	Статический метод для создания объекта квартира
 */
-Apartment Apartment::create()
+Apartment* Apartment::create()
 {
 	Human owner = Human::create();
 
@@ -98,7 +102,7 @@ Apartment Apartment::create()
 	cin >> cost;
 	cin.ignore();
 
-	return Apartment(owner, address, _type, roomCount, area, cost);
+	return new Apartment(owner, address, _type, roomCount, area, cost);
 }
 
 /*
@@ -170,14 +174,27 @@ void Apartment::exportToFile()
 /*
 	Считывает и возвращает экземпляр класса
 */
-Apartment Apartment::importFromFile()
+Apartment* Apartment::importFromFile(ifstream& file)
 {
-	ifstream file(Apartment::_fileName, ios::in);
-	Apartment result;
-	file.read((char*)&result, sizeof(Apartment));
-	file.close();
+	if (!file.eof())
+	{
+		Apartment* result = new Apartment();
+		file.read((char*)result, sizeof(Apartment));
+		if (result->_myId > Apartment::id)
+			Apartment::id = result->_myId + 1;
 
-	return result;
+		return result;
+	}
+	else
+		return nullptr;
+}
+
+/*
+	Возвращает имя файла, в котором лежат экземпляры класса
+*/
+char* Apartment::getFileName()
+{
+	return Apartment::_fileName;
 }
 
 /*

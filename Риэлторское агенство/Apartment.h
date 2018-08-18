@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 
 #include "dequeInstance.h"
 #include "Human.h"
@@ -35,11 +36,12 @@ public:
 	Apartment();
 	Apartment(Human& owner, char address[], DealType type, int roomCount, int area, double cost, int myId=0);
 	Apartment(const Apartment& obj);
-	static Apartment create();
+	static Apartment* create();
 	bool operator<(Apartment& obj);
 	friend ostream& operator<<(ostream& out, Apartment& obj);
 	int getId();
 	void exportToFile();
-	static Apartment importFromFile();
+	static char* getFileName();
+	static Apartment* importFromFile(ifstream& file);
 	~Apartment();
 };

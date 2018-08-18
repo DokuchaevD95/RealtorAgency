@@ -3,12 +3,13 @@
 #include <iostream>
 
 #include "Date.h"
+#include "dequeInstance.h"
 #include "Apartment.h"
 
 using namespace std;
 
 
-class Deal
+class Deal: public dequeInstance
 {
 private:
 	static int id;
@@ -24,12 +25,14 @@ public:
 	Deal();
 	Deal(const Deal& obj);
 	Deal(Date& date, DealType type, double summ, int apartmentId, int realtorId, int myId = 0);
-	static Deal create();
+	static Deal* create();
 	bool operator<(Deal& obj);
 	friend ostream& operator<<(ostream& out, Deal& obj);
 	int getId();
+	int getApartmentId();
 	void exportToFile();
-	static Deal importFromFile();
+	static char* getFileName();
+	static Deal* importFromFile(ifstream& file);
 	~Deal();
 };
 

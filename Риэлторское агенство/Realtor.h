@@ -8,7 +8,7 @@
 using namespace std;
 
 
-class Realtor: dequeInstance
+class Realtor: public dequeInstance
 {
 private:
 	static int id;
@@ -21,11 +21,12 @@ public:
 	Realtor();
 	Realtor(const Realtor& obj);
 	Realtor(Human& name, float percent, int myId = 0);
-	static Realtor create();
+	static Realtor* create();
 	bool operator<(Realtor& obj);
 	friend ostream& operator<<(ostream& out, Realtor& obj);
 	int getId();
 	void exportToFile();
-	static Realtor importFromFile();
+	static char* getFileName();
+	static Realtor* importFromFile(ifstream& file);
 	~Realtor();
 };

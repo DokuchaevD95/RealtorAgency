@@ -43,7 +43,11 @@ Deal::Deal(Date& date, DealType type, double summ, int apartmentId, int realtorI
 	if (myId <= 0)
 		this->_myId = Deal::id++;
 	else
+	{
 		this->_myId = myId;
+		if (myId >= Deal::id)
+			Deal::id = myId + 1;
+	}
 	this->_date = date;
 	this->_type = type;
 	this->_summ = summ;
@@ -54,10 +58,10 @@ Deal::Deal(Date& date, DealType type, double summ, int apartmentId, int realtorI
 /*
 	Метод, создающий новый экземпляр класса сделка
 */
-Deal Deal::create()
+Deal* Deal::create()
 {
 	// TODO: ПРОДУМАТЬ РЕАЛИЗАЦИЮ МЕТОДА, ВОЗМОЖНО ЭТОТ МЕТОД НЕ ПОТРЕБУЕТСЯ
-	return Deal();
+	return new Deal();
 }
 
 /*
@@ -109,16 +113,37 @@ void Deal::exportToFile()
 }
 
 /*
+	Возвращает идентификатор проданной квартиры
+*/
+int Deal::getApartmentId()
+{
+	return this->_apartmentId;
+}
+
+/*
 	Считывает и возвращает экземпляр класса
 */
-Deal Deal::importFromFile()
+Deal* Deal::importFromFile(ifstream& file)
 {
-	ifstream file(Deal::_fileName, ios::binary | ios::in);
-	Deal result;
-	file.read((char*)&result, sizeof(Deal));
-	file.close();
+	if (!file.eof())
+	{
+		Deal* result = new Deal();
+		file.read((char*)&result, sizeof(Deal));
+		if (result->_myId > Deal::id)
+			Deal::id = result->_myId + 1;
 
-	return result;
+		return result;
+	}
+	else
+		return nullptr;
+}
+
+/*
+Возвращает имя файла, в котором лежат экземпляры класса
+*/
+char* Deal::getFileName()
+{
+	return Deal::_fileName;
 }
 
 /*

@@ -1,3 +1,7 @@
+#include <iostream>
+
+using namespace std;
+
 #pragma once
 template <class T>
 class collection
@@ -13,6 +17,7 @@ public:
 	int count();
 	T& operator[](int index);
 	void sort();
+	friend ostream& operator<< <T> (ostream& out, collection<T>& obj);
 	~collection();
 };
 
@@ -169,4 +174,18 @@ void collection<T>::sort()
 			first_layer = dynamic_cast<T*>(first_layer->next());
 		}
 	}
+}
+
+/*
+	Метод, выводящий коллекцию в консоль
+*/
+template<class T>
+ostream& operator<<(ostream& out, collection<T>& obj)
+{
+	if (!obj._count)
+		out << "Пока нет данных в коллекции" << endl;
+	else
+		for (int i = 0; i < obj._count; i++)
+			out << obj;
+	return out;
 }
