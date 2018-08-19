@@ -63,7 +63,7 @@ Realtor* Realtor::create()
 	cin >> salePercent;
 	cin.ignore();
 
-	cout << endl << "¬ведите процентную ставку дл€ аренды от ежемес€чного платежа: ";
+	cout << "¬ведите процентную ставку дл€ аренды от ежемес€чного платежа: ";
 	cin >> leasePercent;
 
 	return new Realtor(name, salePercent, leasePercent);

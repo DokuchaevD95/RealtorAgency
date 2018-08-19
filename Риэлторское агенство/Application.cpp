@@ -53,6 +53,16 @@ void Application::start()
 				this->sort();
 				break;
 
+			// Квартиры в диапазоне
+			case 4:
+				this->apartmentsInRange();
+				break;
+
+			// Прибыль риэлтора
+			case 5:
+
+				break;
+
 			// Сообщение по умлочанию
 			default:
 				cout << "Нет такого пункта меню, попробуйте снова!" << endl;
@@ -97,7 +107,7 @@ void Application::init()
 		} while (deal_ptr);
 	}
 
-	// Считывание реэлторов из файла
+	// Считывание риэлторов из файла
 	if (realtor_file)
 	{
 		Realtor* realtor_ptr;
@@ -137,7 +147,7 @@ void Application::print()
 		cout << endl;
 		cout << left << setw(20) << " -----> Квартиры" << 1 << endl;
 		cout << left << setw(20) << " -----> Сделки" << 2 << endl;
-		cout << left << setw(20) << " -----> Реэлторов" << 3 << endl;
+		cout << left << setw(20) << " -----> Риэлторов" << 3 << endl;
 		cout << left << setw(20) << " <----- Назад" << 0 << endl;
 		cin >> menu_var;
 		cin.ignore();
@@ -239,26 +249,26 @@ void Application::insertDeal()
 		int id;
 		cout << endl;
 		cout << this->_realtors;
+		cout << endl << "Введите ID одного из риэлторов: ";
 		do
 		{
-			cout << "Введите ID одного из реэлторов: ";
 			cin >> id;
 			cin.ignore();
 			realtor_ptr = this->_realtors.getElementById(id);
 			if (!realtor_ptr)
-				cout << "Ошибка ввода ID, попробуйте снова!" << endl;
+				cout << "Ошибка ввода ID, попробуйте снова: ";
 		} while (!realtor_ptr);
 
 		id = 0;
 		cout << this->_apartments;
+		cout << endl << "Введите ID одной из квартир: ";
 		do
 		{
-			cout << "Введите ID одной из квартир: ";
 			cin >> id;
 			cin.ignore();
 			apartment_ptr = this->_apartments.getElementById(id);
 			if (!apartment_ptr)
-				cout << "Ошибка ввода ID, попробуйте снова!" << endl;
+				cout << "Ошибка ввода ID, попробуйте снова: ";
 
 		} while (!apartment_ptr);
 
@@ -284,7 +294,7 @@ void Application::InsertReltor()
 }
 
 /*
-	Метод, отвечающий за сортировку базовых сущностей: квартир, реэлторов и сделок
+	Метод, отвечающий за сортировку базовых сущностей: квартир, риэлторов и сделок
 */
 void Application::sort()
 {
@@ -330,9 +340,18 @@ void Application::sort()
 /*
 	Выводит список квартир в опредленном ценовом диапазоне
 */
-void Application::apartmentsInRange(double start, double end)
+void Application::apartmentsInRange()
 {
+	double start, end;
 	int count = 0;
+
+	cout << endl << "Введите стартовую цену: ";
+	cin >> start;
+	cin.ignore();
+	cout << "Введите конечную цену: ";
+	cin >> end;
+	cin.ignore();
+
 	for (int i = 0; i < this->_apartments.count(); i++)
 	{
 		if (this->_apartments[i].getCost() >= start && this->_apartments[i].getCost() <= end)
@@ -347,6 +366,38 @@ void Application::apartmentsInRange(double start, double end)
 		cout << "---------------------------------------------" << endl;
 	else
 		cout << endl << "Нет результатов удовлетворяющих запросу!" << endl << endl;
+}
+
+/*
+	Прибыль риэлтора за определенный месяц
+*/
+void Application::realtorProfit()
+{
+	bool error = false;
+	int id, month, year;
+	Realtor* realtor_ptr;
+	cout << endl << "Введите ID одного из риэлторов: ";
+	do
+	{
+		cin >> id;
+		cin.ignore();
+		realtor_ptr = this->_realtors.getElementById(id);
+		if (!realtor_ptr)
+			cout << "Ошибка ввода ID, попробуйте снова: ";
+	} while (!realtor_ptr);
+
+	cout << endl << "Введите год: ";
+	do
+	{
+		error = false;
+		cin >> year;
+		cin.ignore();
+
+		if(year < 1920 || year > 2020)
+		{
+			cout << "Ошибка ввода, попробуйте снова: ";
+		}
+	} while (error);
 }
 
 /*

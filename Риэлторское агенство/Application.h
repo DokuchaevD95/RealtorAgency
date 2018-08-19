@@ -15,7 +15,9 @@ private:
 	collection<Realtor> _realtors;
 
 	void init();
-	bool aprtmentWasSaled(Apartment& obj);
+	bool apartmentWasSaled(Apartment& obj);
+	void realtorProfit();
+	void apartmentsInRange();
 	void insert();
 	void insertApartment();
 	void insertDeal();
