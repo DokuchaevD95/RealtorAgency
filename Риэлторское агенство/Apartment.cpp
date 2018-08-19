@@ -17,7 +17,7 @@ int Apartment::id = 1;
 */
 Apartment::Apartment()
 {
-	this->_myId = Apartment::id++;
+	this->_myId = 0;
 	strcpy((char*)this->_address, "");
 	this->_type = DealType::sale;
 	this->_roomCount = 0;

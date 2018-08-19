@@ -49,6 +49,11 @@ void Application::start()
 				this->insert();
 				break;
 
+			// Сортировки
+			case 3:
+				this->sort();
+				break;
+
 			// Сообщение по умлочанию
 			default:
 				cout << "Нет такого пункта меню, попробуйте снова!" << endl;
@@ -260,6 +265,7 @@ void Application::insertDeal()
 
 		Deal* deal_ptr = Deal::create(*apartment_ptr, *realtor_ptr);
 		this->_deals.pushBack(*deal_ptr);;
+		deal_ptr->exportToFile();
 
 		this->_apartments.pop(*apartment_ptr);
 	}
@@ -276,6 +282,50 @@ void Application::InsertReltor()
 	Realtor* realtor_ptr = Realtor::create();
 	realtor_ptr->exportToFile();
 	this->_realtors.pushBack(*realtor_ptr);
+}
+
+/*
+
+*/
+void Application::sort()
+{
+	int menu_var = 0;
+	do
+	{
+		cout << endl;
+		cout << left << setw(20) << " -----> Квартиру" << 1 << endl;
+		cout << left << setw(20) << " -----> Реэлтора" << 2 << endl;
+		cout << left << setw(20) << " -----> Сделку" << 3 << endl;
+		cout << left << setw(20) << " <----- Назад" << 0 << endl;
+		cin >> menu_var;
+		cin.ignore();
+
+		switch (menu_var)
+		{
+			// Квартиры
+		case 1:
+			this->_apartments.sort();
+			break;
+
+			// Реэлторы
+		case 2:
+			this->_realtors.sort();
+			break;
+
+			// Сделки
+		case 3:
+			this->_deals.sort();
+			break;
+
+			// Выход
+		case 0:
+			break;
+
+		default:
+			cout << "Введено неверное значение!!!" << endl;
+			break;
+		}
+	} while (menu_var);
 }
 
 /*

@@ -16,7 +16,7 @@ char Deal::_fileName[] = "deal_base.txt";
 */
 Deal::Deal()
 {
-	this->_myId = Deal::id++;
+	this->_myId = 0;
 	this->_date = Date();
 	this->_type = DealType::sale;
 	this->_summ = 0;
@@ -73,7 +73,7 @@ Deal* Deal::create(Apartment& apartment, Realtor& realtor)
 	else
 		percent = realtor.getLeasePercent();
 
-	summ = apartment.getCost()  / 100. * percent;
+	summ = apartment.getCost() + apartment.getCost()  / 100. * percent;
 	
 	cout << "¬ведите дату сделки" << endl;
 	date = Date::create();
@@ -146,7 +146,7 @@ Deal* Deal::importFromFile(ifstream& file)
 	if (!file.eof())
 	{
 		Deal* result = new Deal();
-		if (!file.read((char*)&result, sizeof(Deal)))
+		if (!file.read((char*)result, sizeof(Deal)))
 			return nullptr;
 		if (result->_myId > Deal::id)
 			Deal::id = result->_myId + 1;

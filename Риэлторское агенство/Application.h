@@ -21,6 +21,7 @@ private:
 	void insertDeal();
 	void InsertReltor();
 	void print();
+	void sort();
 public:
 	Application();
 	void start();

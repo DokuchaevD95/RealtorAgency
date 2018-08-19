@@ -15,7 +15,7 @@ char Realtor::_fileName[] = "realtor_base.txt";
 */
 Realtor::Realtor()
 {
-	this->_myId = Realtor::id++;
+	this->_myId = 0;
 	this->_name = Human();
 	this->_salePercent = 0;
 	this->_leasePercent = 0;
@@ -124,7 +124,7 @@ void Realtor::exportToFile()
 */
 Realtor* Realtor::importFromFile(ifstream& file)
 {
-	if (file.eof())
+	if (!file.eof())
 	{
 		Realtor* result = new Realtor();
 		if (!file.read((char*)result, sizeof(Realtor)))

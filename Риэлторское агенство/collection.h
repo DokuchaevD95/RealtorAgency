@@ -132,7 +132,7 @@ int collection<T>::count()
 template<class T>
 T* collection<T>::getElementById(int id)
 {
-	if (this->_begin && this->_end)
+	if (!this->_begin && !this->_end)
 		return nullptr;
 	else
 	{
