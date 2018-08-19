@@ -260,6 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 
-Риэлторское агенство/apartment_base.txt
-Риэлторское агенство/deal_base.txt
-Риэлторское агенство/realtor_base.txt
+*.txt
