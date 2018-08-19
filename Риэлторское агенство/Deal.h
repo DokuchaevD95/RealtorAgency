@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Date.h"
+#include "Realtor.h"
 #include "dequeInstance.h"
 #include "Apartment.h"
 
@@ -25,7 +26,7 @@ public:
 	Deal();
 	Deal(const Deal& obj);
 	Deal(Date& date, DealType type, double summ, int apartmentId, int realtorId, int myId = 0);
-	static Deal* create();
+	static Deal* create(Apartment& apartment, Realtor& realtor);
 	bool operator<(Deal& obj);
 	friend ostream& operator<<(ostream& out, Deal& obj);
 	int getId();
@@ -33,6 +34,8 @@ public:
 	void exportToFile();
 	static char* getFileName();
 	static Deal* importFromFile(ifstream& file);
+	Deal* next();
+	Deal* prev();
 	~Deal();
 };
 

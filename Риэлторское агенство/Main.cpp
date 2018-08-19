@@ -10,5 +10,6 @@ void main()
 	setlocale(0, "");
 	Application app;
 	app.start();
+	cout << endl;
 	system("pause");
 }

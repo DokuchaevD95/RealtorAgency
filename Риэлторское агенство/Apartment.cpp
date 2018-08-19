@@ -39,7 +39,7 @@ Apartment::Apartment(Human& owner, char address[], DealType type, int roomCount,
 			Apartment::id = myId + 1;
 	}
 	this->_owner = owner;
-	strcpy((char*)this->_address, (char*)address);
+	strcpy(this->_address, address);
 	this->_type = type;
 	this->_roomCount = roomCount;
 	this->_area = area;
@@ -137,7 +137,7 @@ bool Apartment::operator<(Apartment& obj)
 */
 ostream& operator<<(ostream& out, Apartment& obj)
 {
-	cout << "-----------------Квартира----------------" << endl << endl;
+	cout << endl;
 	cout << "ID: " << obj._myId << endl;
 	cout << "Владелец: " << obj._owner << endl;
 	cout << "Адрес: " << obj._address << endl;
@@ -149,7 +149,7 @@ ostream& operator<<(ostream& out, Apartment& obj)
 	else
 		cout << "аренда" << endl;
 	cout << "Стоимость: " << obj._cost << endl;
-	cout << endl << "-----------------------------------------" << endl;
+	cout << endl;
 	return out;
 }
 
@@ -179,7 +179,9 @@ Apartment* Apartment::importFromFile(ifstream& file)
 	if (!file.eof())
 	{
 		Apartment* result = new Apartment();
-		file.read((char*)result, sizeof(Apartment));
+		if (!file.read((char*)result, sizeof(Apartment)))
+			return nullptr;
+
 		if (result->_myId > Apartment::id)
 			Apartment::id = result->_myId + 1;
 
@@ -195,6 +197,38 @@ Apartment* Apartment::importFromFile(ifstream& file)
 char* Apartment::getFileName()
 {
 	return Apartment::_fileName;
+}
+
+/*
+	Метод возвращает тип сделки для квартиры
+*/
+DealType Apartment::getType()
+{
+	return this->_type;
+}
+
+/*
+	Метод возвращает стоимость квартиры
+*/
+double Apartment::getCost()
+{
+	return this->_cost;
+}
+
+/*
+	Возвращает указатель на следующий элемент
+*/
+Apartment* Apartment::next()
+{
+	return (Apartment*)this->_next;
+}
+
+/*
+	Возвращает указатель на предыдущий элемент
+*/
+Apartment* Apartment::prev()
+{
+	return (Apartment*)this->_prev;
 }
 
 /*

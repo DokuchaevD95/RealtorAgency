@@ -16,6 +16,10 @@ private:
 
 	void init();
 	bool aprtmentWasSaled(Apartment& obj);
+	void insert();
+	void insertApartment();
+	void insertDeal();
+	void InsertReltor();
 	void print();
 public:
 	Application();

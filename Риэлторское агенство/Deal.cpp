@@ -2,6 +2,7 @@
 #include <fstream>
 
 #include "Deal.h"
+#include "Realtor.h"
 
 using namespace std;
 
@@ -58,10 +59,26 @@ Deal::Deal(Date& date, DealType type, double summ, int apartmentId, int realtorI
 /*
 	Метод, создающий новый экземпляр класса сделка
 */
-Deal* Deal::create()
+Deal* Deal::create(Apartment& apartment, Realtor& realtor)
 {
-	// TODO: ПРОДУМАТЬ РЕАЛИЗАЦИЮ МЕТОДА, ВОЗМОЖНО ЭТОТ МЕТОД НЕ ПОТРЕБУЕТСЯ
-	return new Deal();
+	int apartmentId = apartment.getId();
+	int realtorId = realtor.getId();
+	float percent = 0;
+	double summ = 0;
+	Date date;
+	DealType type = apartment.getType();
+
+	if (type == DealType::sale)
+		percent = realtor.getSalePercent();
+	else
+		percent = realtor.getLeasePercent();
+
+	summ = apartment.getCost()  / 100. * percent;
+	
+	cout << "Введите дату сделки" << endl;
+	date = Date::create();
+
+	return new Deal(date, type, summ, apartmentId, realtorId);
 }
 
 /*
@@ -79,7 +96,8 @@ bool Deal::operator<(Deal& obj)
 */
 ostream& operator<<(ostream& out, Deal& obj)
 {
-	out << "-----------------Сделка----------------" << endl << endl;
+	out << endl;
+	out << "ID: " << obj._myId << endl;
 	out << "Дата: " << obj._date << endl;
 	out << "Сумма сделки: " << obj._summ << endl;
 	out << "Тип сделки: ";
@@ -89,7 +107,7 @@ ostream& operator<<(ostream& out, Deal& obj)
 		out << "аренда" << endl;
 	out << "ID квартиры: " << obj._apartmentId << endl;
 	out << "ID риэлтора: " << obj._realtorId << endl;
-	out << endl << "---------------------------------------" << endl;
+	out << endl;
 	
 	return out;
 }
@@ -128,7 +146,8 @@ Deal* Deal::importFromFile(ifstream& file)
 	if (!file.eof())
 	{
 		Deal* result = new Deal();
-		file.read((char*)&result, sizeof(Deal));
+		if (!file.read((char*)&result, sizeof(Deal)))
+			return nullptr;
 		if (result->_myId > Deal::id)
 			Deal::id = result->_myId + 1;
 
@@ -139,11 +158,27 @@ Deal* Deal::importFromFile(ifstream& file)
 }
 
 /*
-Возвращает имя файла, в котором лежат экземпляры класса
+	Возвращает имя файла, в котором лежат экземпляры класса
 */
 char* Deal::getFileName()
 {
 	return Deal::_fileName;
+}
+
+/*
+	Возвращает указатель на следующий элемент
+*/
+Deal* Deal::next()
+{
+	return (Deal*)this->_next;
+}
+
+/*
+	Возвращает указатель на предыдущий элемент
+*/
+Deal* Deal::prev()
+{
+	return (Deal*)this->_prev;
 }
 
 /*

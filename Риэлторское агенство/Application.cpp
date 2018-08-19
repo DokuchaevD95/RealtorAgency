@@ -23,13 +23,13 @@ void Application::start()
 	do
 	{
 		cout << endl;
-		cout << left << setw(35) << "---> Вывести на печать" << 1 << endl;
-		cout << left << setw(35) << "---> Добавить" << 2 << endl;
-		cout << left << setw(35) << "---> Отсортировать" << 3 << endl;
-		cout << left << setw(35) << "---> Интерфейс удаления" << 4 << endl;
-		cout << left << setw(35) << "---> Найти квартиры в диапазоне" << 5 << endl;
-		cout << left << setw(35) << "---> Прибыль реэлтора за месяц" << 6 << endl;
-		cout << left << setw(35) << "---> Выход" << 0 << endl;
+		cout << left << setw(35) << " ---> Вывести на печать" << 1 << endl;
+		cout << left << setw(35) << " ---> Добавить" << 2 << endl;
+		cout << left << setw(35) << " ---> Отсортировать" << 3 << endl;
+		cout << left << setw(35) << " ---> Интерфейс удаления" << 4 << endl;
+		cout << left << setw(35) << " ---> Найти квартиры в диапазоне" << 5 << endl;
+		cout << left << setw(35) << " ---> Прибыль реэлтора за месяц" << 6 << endl;
+		cout << left << setw(35) << " <--- Выход" << 0 << endl;
 		cin >> menu_var;
 		cin.ignore();
 
@@ -42,6 +42,11 @@ void Application::start()
 			// Вывод
 			case 1:
 				this->print();
+				break;
+
+			// Ввод
+			case 2:
+				this->insert();
 				break;
 
 			// Сообщение по умлочанию
@@ -72,9 +77,9 @@ bool Application::aprtmentWasSaled(Apartment& obj)
 */
 void Application::init()
 {
-	ifstream apartment_file(Apartment::getFileName(), ios::in | ios::binary);
-	ifstream deal_file(Deal::getFileName(), ios::binary | ios::in);
-	ifstream realtor_file(Realtor::getFileName(), ios::binary | ios::in);
+	ifstream apartment_file(Apartment::getFileName(), ios::binary);
+	ifstream deal_file(Deal::getFileName(), ios::binary);
+	ifstream realtor_file(Realtor::getFileName(), ios::binary);
 
 	// Считывание сделок из файла
 	if (deal_file)
@@ -126,10 +131,10 @@ void Application::print()
 	do
 	{
 		cout << endl;
-		cout << left << setw(20) << "---> Квартиры" << 1 << endl;
-		cout << left << setw(20) << "---> Сделки" << 2 << endl;
-		cout << left << setw(20) << "---> Реэлторов" << 3 << endl;
-		cout << left << setw(20) << "<--- Назад" << 0 << endl;
+		cout << left << setw(20) << " -----> Квартиры" << 1 << endl;
+		cout << left << setw(20) << " -----> Сделки" << 2 << endl;
+		cout << left << setw(20) << " -----> Реэлторов" << 3 << endl;
+		cout << left << setw(20) << " <----- Назад" << 0 << endl;
 		cin >> menu_var;
 		cin.ignore();
 
@@ -161,6 +166,118 @@ void Application::print()
 		}
 	} while (menu_var);
 }
+
+/*
+	Общий контролле по добавлению новых экземпляров коллекции
+*/
+void Application::insert()
+{
+	int menu_var;
+	do
+	{
+		cout << endl;
+		cout << left << setw(20) << " -----> Квартиру" << 1 << endl;
+		cout << left << setw(20) << " -----> Реэлтора" << 2 << endl;
+		cout << left << setw(20) << " -----> Сделку" << 3 << endl;
+		cout << left << setw(20) << " <----- Назад" << 0 << endl;
+		cin >> menu_var;
+		cin.ignore();
+
+		switch (menu_var)
+		{
+			// Квартиры
+			case 1:
+				this->insertApartment();
+				break;
+
+			// Реэлторы
+			case 2:
+				this->InsertReltor();
+				break;
+
+			// Сделки
+			case 3:
+				this->insertDeal();
+				break;
+
+			// Выход
+			case 0:
+				break;
+
+			default:
+				cout << "Введено неверное значение!!!" << endl;
+				break;
+		}
+	} while (menu_var);
+}
+
+/*
+	Метод, добавляющий новую квартиру в коллекцию
+	и записывающий эту квартиру в файл
+*/
+void Application::insertApartment()
+{
+	Apartment* apartment_ptr = Apartment::create();
+	apartment_ptr->exportToFile();
+	this->_apartments.pushBack(*apartment_ptr);
+}
+
+/*
+	Метод, добавляющий новую сделку в коллекцию
+	и записывающий эту сделку в файл
+*/
+void Application::insertDeal()
+{
+	if (this->_realtors.count() && this->_apartments.count())
+	{
+		Realtor* realtor_ptr;
+		Apartment* apartment_ptr;
+		int id;
+		cout << endl;
+		cout << this->_realtors;
+		do
+		{
+			cout << "Введите ID одного из реэлторов: ";
+			cin >> id;
+			cin.ignore();
+			realtor_ptr = this->_realtors.getElementById(id);
+			if (!realtor_ptr)
+				cout << "Ошибка ввода ID, попробуйте снова!" << endl;
+		} while (!realtor_ptr);
+
+		id = 0;
+		cout << this->_apartments;
+		do
+		{
+			cout << "Введите ID одной из квартир: ";
+			cin >> id;
+			cin.ignore();
+			apartment_ptr = this->_apartments.getElementById(id);
+			if (!apartment_ptr)
+				cout << "Ошибка ввода ID, попробуйте снова!" << endl;
+
+		} while (!apartment_ptr);
+
+		Deal* deal_ptr = Deal::create(*apartment_ptr, *realtor_ptr);
+		this->_deals.pushBack(*deal_ptr);;
+
+		this->_apartments.pop(*apartment_ptr);
+	}
+	else
+		cout << "Нет данных о реэлторах либо квартирах!" << endl;
+}
+
+/*
+	Метод, добавляющий нового реэлтора в коллекцию
+	и записывающий этого реэлтора в файл
+*/
+void Application::InsertReltor()
+{
+	Realtor* realtor_ptr = Realtor::create();
+	realtor_ptr->exportToFile();
+	this->_realtors.pushBack(*realtor_ptr);
+}
+
 /*
 	Деструктор
 */

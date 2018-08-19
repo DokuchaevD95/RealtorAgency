@@ -114,23 +114,6 @@ bool dequeInstance::is_end()
 }
 
 /*
-	Возвращает указатель предыдущего экземпляра относительно текущего
-*/
-dequeInstance* dequeInstance::prev()
-{
-	return this->_prev;
-}
-
-
-/*
-	Возвращает указатель следующего экземпляра очереди относительно текущего
-*/
-dequeInstance* dequeInstance::next()
-{
-	return this->_next;
-}
-
-/*
 	Статический метод, перемещающий два элемента стека между собой
 */
 bool dequeInstance::swap(dequeInstance* src, dequeInstance* dst)
@@ -140,9 +123,15 @@ bool dequeInstance::swap(dequeInstance* src, dequeInstance* dst)
 	else
 	{
 		if (src->_prev == dst)
+		{
 			src->up();
+			return true;
+		}
 		else if (src->_next == dst)
+		{
 			src->down();
+			return true;
+		}
 		else
 		{
 			dequeInstance* src_prev = src->_prev;

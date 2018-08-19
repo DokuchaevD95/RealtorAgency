@@ -27,7 +27,7 @@ private:
 
 	int _myId;
 	Human _owner;
-	char* _address[50];
+	char _address[50];
 	DealType _type;
 	int _roomCount;
 	int _area;
@@ -40,8 +40,12 @@ public:
 	bool operator<(Apartment& obj);
 	friend ostream& operator<<(ostream& out, Apartment& obj);
 	int getId();
+	double getCost();
+	DealType getType();
 	void exportToFile();
 	static char* getFileName();
 	static Apartment* importFromFile(ifstream& file);
+	Apartment* next();
+	Apartment* prev();
 	~Apartment();
 };

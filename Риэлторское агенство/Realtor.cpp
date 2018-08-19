@@ -17,7 +17,8 @@ Realtor::Realtor()
 {
 	this->_myId = Realtor::id++;
 	this->_name = Human();
-	this->_percent = 0;
+	this->_salePercent = 0;
+	this->_leasePercent = 0;
 }
 
 /*
@@ -27,13 +28,14 @@ Realtor::Realtor(const Realtor& obj)
 {
 	this->_myId = obj._myId;
 	this->_name = obj._name;
-	this->_percent = obj._percent;
+	this->_salePercent = obj._salePercent;
+	this->_leasePercent = obj._leasePercent;
 }
 
 /*
 	Конструктор с параметрами
 */
-Realtor::Realtor(Human& name, float percent, int myId)
+Realtor::Realtor(Human& name, float salePercent, float leasePercent, int myId)
 {
 	if (myId <= 0)
 		this->_myId = Realtor::id++;
@@ -44,7 +46,8 @@ Realtor::Realtor(Human& name, float percent, int myId)
 			Realtor::id = myId + 1;
 	}
 	this->_name = name;
-	this->_percent = percent;
+	this->_salePercent = salePercent;
+	this->_leasePercent = leasePercent;
 }
 
 /*
@@ -54,12 +57,16 @@ Realtor* Realtor::create()
 {
 	Human name = Human::create();
 
-	float percent;
-	cout << "Введите процентную ставку: ";
-	cin >> percent;
+	float salePercent, leasePercent;
+
+	cout << "Введите процентную ставку для продаж: ";
+	cin >> salePercent;
 	cin.ignore();
 
-	return new Realtor(name, percent);
+	cout << endl << "Введите процентную ставку для аренды от ежемесячного платежа: ";
+	cin >> leasePercent;
+
+	return new Realtor(name, salePercent, leasePercent);
 }
 
 /*
@@ -67,8 +74,14 @@ Realtor* Realtor::create()
 */
 bool Realtor::operator<(Realtor& obj)
 {
-	if (this->_percent < obj._percent)
+	if (this->_salePercent < obj._salePercent)
 		return true;
+	else if (this->_salePercent == obj._salePercent)
+	{
+		if (this->_leasePercent < obj._leasePercent)
+			return true;
+		else return false;
+	}
 	else 
 		return false;
 }
@@ -78,10 +91,12 @@ bool Realtor::operator<(Realtor& obj)
 */
 ostream& operator<<(ostream& out, Realtor& obj)
 {
-	out << "-----------------Риэлтор----------------" << endl << endl;
+	out << endl;
+	out << "ID: " << obj._myId << endl;
 	out << "ФИО: " << obj._name << endl;
-	out << "Процентная ставка: " << obj._percent << endl;
-	out << endl << "----------------------------------------" << endl;
+	out << "Процентная ставка для продажи: " << obj._salePercent << endl;
+	out << "Процентная ставка для аренды: " << obj._leasePercent << endl;
+	out << endl;
 
 	return out;
 }
@@ -112,7 +127,8 @@ Realtor* Realtor::importFromFile(ifstream& file)
 	if (file.eof())
 	{
 		Realtor* result = new Realtor();
-		file.read((char*)result, sizeof(Realtor));
+		if (!file.read((char*)result, sizeof(Realtor)))
+			return nullptr;
 		if (result->_myId > Realtor::id)
 			Realtor::id = result->_myId + 1;
 		return result;
@@ -122,11 +138,43 @@ Realtor* Realtor::importFromFile(ifstream& file)
 }
 
 /*
-Возвращает имя файла, в котором лежат экземпляры класса
+	Возвращает процент для продажи реэлтора
+*/
+float Realtor::getSalePercent()
+{
+	return this->_salePercent;
+}
+
+/*
+	Возвращает процент для аренды реэлтора
+*/
+float Realtor::getLeasePercent()
+{
+	return this->_leasePercent;
+}
+
+/*
+Возвращает имя файла, в котором лежат экземпляры классаs
 */
 char* Realtor::getFileName()
 {
 	return Realtor::_fileName;
+}
+
+/*
+	Возвращает указатель на следующий элемент
+*/
+Realtor* Realtor::next()
+{
+	return (Realtor*)this->_next;
+}
+
+/*
+	Возвращает указатель на предыдущий элемент
+*/
+Realtor* Realtor::prev()
+{
+	return (Realtor*)this->_prev;
 }
 
 /*

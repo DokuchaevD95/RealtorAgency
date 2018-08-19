@@ -68,16 +68,16 @@ void collection<T>::pop(T& obj)
 		if (tmp == &obj)
 		{
 			if (&obj == this->_begin)
-				this->_begin = dynamic_cast<T*>(obj.next());
+				this->_begin = obj.next();
 			if (&obj == this->_end)
-				this->_end = dynamic_cast<T*>(obj.prev());
+				this->_end = obj.prev();
 			T* obj_pointer = &obj;
 			delete obj_pointer;
 			this->_count--;
 
 			break;
 		}
-		tmp = dynamic_cast<T*>(tmp->next());
+		tmp = tmp->next();
 	}
 }
 
@@ -92,7 +92,9 @@ T& collection<T>::operator[](int index)
 
 	T* tmp = this->_begin;
 	for (auto i = 0; i < index; i++)
-		tmp = dynamic_cast<T*>(tmp->next());
+	{
+		tmp = tmp->next();
+	}
 
 	return *tmp;
 }
@@ -103,11 +105,13 @@ T& collection<T>::operator[](int index)
 template<class T>
 collection<T>::~collection()
 {
-	auto obj = this->_begin;
+	T* obj = this->_begin;
 	if (obj)
 		while (obj)
 		{
-			auto next = dynamic_cast<T*>(obj->next());
+			T* next = nullptr;
+			if(obj->next())
+				T* next = obj->next();
 			delete obj;
 			obj = next;
 		}
@@ -137,7 +141,7 @@ T* collection<T>::getElementById(int id)
 		{
 			if (obj->getId() == id)
 				return obj;
-			obj = dynamic_cast<T*>(obj->next());
+			obj = obj->next();
 		}
 		return nullptr;
 	}
@@ -154,13 +158,13 @@ void collection<T>::sort()
 		T* first_layer = this->_begin;
 		while (first_layer)
 		{
-			T* min = dynamic_cast<T*>(first_layer->next());
-			T* second_layer = dynamic_cast<T*>(first_layer->next());
+			T* min = first_layer->next();
+			T* second_layer = first_layer->next();
 			while (second_layer)
 			{
 				if ((*second_layer) < (*min))
 					min = second_layer;
-				second_layer = dynamic_cast<T*>(second_layer->next());
+				second_layer = second_layer->next();
 			}
 			if (min)
 			{
@@ -171,7 +175,7 @@ void collection<T>::sort()
 				}
 			}
 
-			first_layer = dynamic_cast<T*>(first_layer->next());
+			first_layer = first_layer->next();
 		}
 	}
 }
@@ -185,7 +189,11 @@ ostream& operator<<(ostream& out, collection<T>& obj)
 	if (!obj._count)
 		out << "Пока нет данных в коллекции" << endl;
 	else
+	{
+		cout << endl << "---------------------------------------------" << endl;
 		for (int i = 0; i < obj._count; i++)
-			out << obj;
+			out << obj[i];
+		cout << "---------------------------------------------" << endl;
+	}
 	return out;
 }

@@ -6,7 +6,7 @@
 */
 class dequeInstance
 {
-private:
+protected:
 	dequeInstance *_prev, *_next;
 public:
 	dequeInstance();
@@ -19,7 +19,5 @@ public:
 	bool is_begin();
 	bool is_end();
 	static bool swap(dequeInstance* src, dequeInstance* dst);
-	virtual dequeInstance* prev();
-	virtual dequeInstance* next();
 	~dequeInstance();
 };
