@@ -26,9 +26,8 @@ void Application::start()
 		cout << left << setw(35) << " ---> Вывести на печать" << 1 << endl;
 		cout << left << setw(35) << " ---> Добавить" << 2 << endl;
 		cout << left << setw(35) << " ---> Отсортировать" << 3 << endl;
-		cout << left << setw(35) << " ---> Интерфейс удаления" << 4 << endl;
-		cout << left << setw(35) << " ---> Найти квартиры в диапазоне" << 5 << endl;
-		cout << left << setw(35) << " ---> Прибыль реэлтора за месяц" << 6 << endl;
+		cout << left << setw(35) << " ---> Найти квартиры в диапазоне" << 4 << endl;
+		cout << left << setw(35) << " ---> Прибыль реэлтора за месяц" << 5 << endl;
 		cout << left << setw(35) << " <--- Выход" << 0 << endl;
 		cin >> menu_var;
 		cin.ignore();
@@ -66,7 +65,7 @@ void Application::start()
 	Проверяет, была ли продана данная квартира.
 	Если квартира была продана, она не загружается в программу из файла
 */
-bool Application::aprtmentWasSaled(Apartment& obj)
+bool Application::apartmentWasSaled(Apartment& obj)
 {
 	int apartmentId = obj.getId();
 	for (int i = 0; i < this->_deals.count(); i++)
@@ -117,7 +116,7 @@ void Application::init()
 		do
 		{
 			apartment_ptr = Apartment::importFromFile(apartment_file);
-			if (apartment_ptr && !this->aprtmentWasSaled(*apartment_ptr))
+			if (apartment_ptr && !this->apartmentWasSaled(*apartment_ptr))
 				this->_apartments.pushBack(*apartment_ptr);
 		} while (apartment_ptr);
 	}
@@ -285,7 +284,7 @@ void Application::InsertReltor()
 }
 
 /*
-
+	Метод, отвечающий за сортировку базовых сущностей: квартир, реэлторов и сделок
 */
 void Application::sort()
 {
@@ -326,6 +325,28 @@ void Application::sort()
 			break;
 		}
 	} while (menu_var);
+}
+
+/*
+	Выводит список квартир в опредленном ценовом диапазоне
+*/
+void Application::apartmentsInRange(double start, double end)
+{
+	int count = 0;
+	for (int i = 0; i < this->_apartments.count(); i++)
+	{
+		if (this->_apartments[i].getCost() >= start && this->_apartments[i].getCost() <= end)
+		{
+			if(count == 0)
+				cout << endl << "---------------------------------------------" << endl;
+			cout << this->_apartments[i];
+			count++;
+		}
+	}
+	if (count)
+		cout << "---------------------------------------------" << endl;
+	else
+		cout << endl << "Нет результатов удовлетворяющих запросу!" << endl << endl;
 }
 
 /*
