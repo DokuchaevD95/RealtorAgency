@@ -60,7 +60,7 @@ void Application::start()
 
 			// Прибыль риэлтора
 			case 5:
-
+				this->realtorProfit();
 				break;
 
 			// Сообщение по умлочанию
@@ -373,9 +373,11 @@ void Application::apartmentsInRange()
 */
 void Application::realtorProfit()
 {
+	double summ = 0;
 	bool error = false;
 	int id, month, year;
 	Realtor* realtor_ptr;
+	cout << this->_realtors;
 	cout << endl << "Введите ID одного из риэлторов: ";
 	do
 	{
@@ -386,7 +388,7 @@ void Application::realtorProfit()
 			cout << "Ошибка ввода ID, попробуйте снова: ";
 	} while (!realtor_ptr);
 
-	cout << endl << "Введите год: ";
+	cout << "Введите год: ";
 	do
 	{
 		error = false;
@@ -396,8 +398,31 @@ void Application::realtorProfit()
 		if(year < 1920 || year > 2020)
 		{
 			cout << "Ошибка ввода, попробуйте снова: ";
+			error = true;
 		}
 	} while (error);
+
+	cout << "Введите месяц: ";
+	do
+	{
+		error = false;
+		cin >> month;
+		cin.ignore();
+
+		if (month < 1 || month > 12)
+		{
+			cout << "Ошибка ввода, попробуйте снова: ";
+			error = true;
+		}
+	} while (error);
+
+	for (int i = 0; i < this->_deals.count(); i++)
+	{
+		if (this->_deals[i].getRealtorId() == realtor_ptr->getId() && this->_deals[i].getDate().equalMonthAndYear(year, month))
+			summ += this->_deals[i].getRealtorProfit();
+	}
+
+	cout << "Заработок риэлтора в выбранный период: " << summ << endl;
 }
 
 /*

@@ -20,6 +20,7 @@ Deal::Deal()
 	this->_date = Date();
 	this->_type = DealType::sale;
 	this->_summ = 0;
+	this->_apartment_cost = 0;
 	this->_apartmentId = this->_realtorId = 0;
 }
 
@@ -32,6 +33,7 @@ Deal::Deal(const Deal& obj)
 	this->_date = obj._date;
 	this->_type = obj._type;
 	this->_summ = obj._summ;
+	this->_apartment_cost = obj._apartment_cost;
 	this->_apartmentId = obj._apartmentId;
 	this->_realtorId = obj._realtorId;
 }
@@ -39,7 +41,7 @@ Deal::Deal(const Deal& obj)
 /*
 	Конструктор с параметрами
 */
-Deal::Deal(Date& date, DealType type, double summ, int apartmentId, int realtorId, int myId)
+Deal::Deal(Date& date, DealType type, double summ, double apartment_cost, int apartmentId, int realtorId, int myId)
 {
 	if (myId <= 0)
 		this->_myId = Deal::id++;
@@ -52,6 +54,7 @@ Deal::Deal(Date& date, DealType type, double summ, int apartmentId, int realtorI
 	this->_date = date;
 	this->_type = type;
 	this->_summ = summ;
+	this->_apartment_cost = apartment_cost;
 	this->_apartmentId = apartmentId;
 	this->_realtorId = realtorId;
 }
@@ -64,7 +67,7 @@ Deal* Deal::create(Apartment& apartment, Realtor& realtor)
 	int apartmentId = apartment.getId();
 	int realtorId = realtor.getId();
 	float percent = 0;
-	double summ = 0;
+	double summ = 0, apartment_cost = 0;
 	Date date;
 	DealType type = apartment.getType();
 
@@ -73,12 +76,13 @@ Deal* Deal::create(Apartment& apartment, Realtor& realtor)
 	else
 		percent = realtor.getLeasePercent();
 
+	apartment_cost = apartment.getCost();
 	summ = apartment.getCost() + apartment.getCost()  / 100. * percent;
 	
 	cout << "Введите дату сделки" << endl;
 	date = Date::create();
 
-	return new Deal(date, type, summ, apartmentId, realtorId);
+	return new Deal(date, type, summ, apartment_cost, apartmentId, realtorId);
 }
 
 /*
@@ -99,6 +103,7 @@ ostream& operator<<(ostream& out, Deal& obj)
 	out << endl;
 	out << "ID: " << obj._myId << endl;
 	out << "Дата: " << obj._date << endl;
+	out << "Стоимость квартиры: " << obj._apartment_cost << endl;
 	out << "Сумма сделки: " << obj._summ << endl;
 	out << "Тип сделки: ";
 	if (obj._type == DealType::sale)
@@ -179,6 +184,30 @@ Deal* Deal::next()
 Deal* Deal::prev()
 {
 	return (Deal*)this->_prev;
+}
+
+/*
+	Метод, возвращающий ID риэлтора
+*/
+int Deal::getRealtorId()
+{
+	return this->_realtorId;
+}
+
+/*
+	Метод возвращающий дату сделки
+*/
+Date Deal::getDate()
+{
+	return this->_date;
+}
+
+/*
+	Возвращает сумму, которую заработал риэлтор с этой сделки
+*/
+double Deal::getRealtorProfit()
+{
+	return (double)(this->_summ - this->_apartment_cost);
 }
 
 /*

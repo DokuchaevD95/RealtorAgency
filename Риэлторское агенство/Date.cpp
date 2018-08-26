@@ -50,7 +50,7 @@ Date Date::create()
 		cout << "Год: ";
 		cin >> year;
 		cin.ignore();
-		if (year > 2018 || year < 1920)
+		if (year > 2020 || year < 1920)
 		{
 			error = true;
 		}

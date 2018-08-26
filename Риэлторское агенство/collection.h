@@ -170,6 +170,10 @@ void collection<T>::sort()
 			{
 				if ((*min) < (*first_layer))
 				{
+					if (first_layer == this->_begin)
+						this->_begin = min;
+					if (min == this->_end)
+						this->_end = first_layer;
 					dequeInstance::swap(min, first_layer);
 					first_layer = min;
 				}
