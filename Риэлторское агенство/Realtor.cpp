@@ -51,7 +51,7 @@ Realtor::Realtor(Human& name, float salePercent, float leasePercent, int myId)
 }
 
 /*
-	Статический метод, создающий новый экземпляр класса риэлтор
+	Статический метод, создающий новый экземпляр класса риелтор
 */
 Realtor* Realtor::create()
 {

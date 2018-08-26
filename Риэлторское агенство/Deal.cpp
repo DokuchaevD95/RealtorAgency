@@ -111,7 +111,7 @@ ostream& operator<<(ostream& out, Deal& obj)
 	else
 		out << "аренда" << endl;
 	out << "ID квартиры: " << obj._apartmentId << endl;
-	out << "ID риэлтора: " << obj._realtorId << endl;
+	out << "ID риелтора: " << obj._realtorId << endl;
 	out << endl;
 	
 	return out;
@@ -187,7 +187,7 @@ Deal* Deal::prev()
 }
 
 /*
-	Метод, возвращающий ID риэлтора
+	Метод, возвращающий ID риелтора
 */
 int Deal::getRealtorId()
 {
@@ -203,7 +203,7 @@ Date Deal::getDate()
 }
 
 /*
-	Возвращает сумму, которую заработал риэлтор с этой сделки
+	Возвращает сумму, которую заработал риелтор с этой сделки
 */
 double Deal::getRealtorProfit()
 {
